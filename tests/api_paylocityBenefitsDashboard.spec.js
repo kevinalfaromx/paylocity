@@ -28,7 +28,7 @@ test('Verify 200 - POST & GET Employees ', async ({ request }) => {
   const body = {
     firstName: randomFirstname,
     lastName: randomLastname,
-    dependents: randomDependent
+    dependants: randomDependent
   }
   const response = await request.post(url, {
     headers: {
@@ -82,7 +82,7 @@ test('Verify 200 - POST & PUT Employees ', async ({ request }) => {
   const body = {
     firstName: randomFirstname,
     lastName: randomLastname,
-    dependents: randomDependent
+    dependants: randomDependent
   }
 
   const response = await request.post(url, {
@@ -104,7 +104,7 @@ test('Verify 200 - POST & PUT Employees ', async ({ request }) => {
   const bodyNew = {
     firstName: randomFirstnameNew,
     lastName: randomLastnameNew,
-    dependents: randomDependentNew,
+    dependants: randomDependentNew,
     id: employeeId
   }
 
@@ -129,12 +129,12 @@ test('Verify 200 - POST & PUT Employees ', async ({ request }) => {
 test('Verify 400 - POST Employees FirstName', async ({ request }) => {
   const randomFirstname = '';
   const randomLastname = generateRandomName(7);
-  const randomDependent = '';
+  const randomDependent = Math.floor(Math.random() * 33);
 
   const body = {
     firstName: randomFirstname,
     lastName: randomLastname,
-    dependents: randomDependent
+    dependants: randomDependent
   }
   const response = await request.post(url, {
     headers: {
@@ -154,12 +154,12 @@ test('Verify 400 - POST Employees FirstName', async ({ request }) => {
 test('Verify 400 - POST Employees LastName', async ({ request }) => {
   const randomFirstname = generateRandomName(7);
   const randomLastname = '';
-  const randomDependent = '';
+  const randomDependent = Math.floor(Math.random() * 33);
 
   const body = {
     firstName: randomFirstname,
     lastName: randomLastname,
-    dependents: randomDependent
+    dependants: randomDependent
   }
   const response = await request.post(url, {
     headers: {
@@ -172,4 +172,27 @@ test('Verify 400 - POST Employees LastName', async ({ request }) => {
   expect(response.status()).toBe(400);
   const errorMsg = await response.json();
   expect(errorMsg[0].errorMessage).toEqual('The LastName field is required.');
+});
+
+test.only('Verify 400 - POST Employees Long Firstname', async ({ request }) => {
+  const randomFirstname = '123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890';
+  const randomLastname = generateRandomName(7);
+  const randomDependent = Math.floor(Math.random() * 33);
+
+  const body = {
+    firstName: randomFirstname,
+    lastName: randomLastname,
+    dependants: randomDependent
+  }
+  const response = await request.post(url, {
+    headers: {
+      'Authorization': auth,
+      'Accept': accept
+    },
+    data: body,
+  });
+
+  expect(response.status()).toBe(400);
+  const errorMsg = await response.json();
+  expect(errorMsg[0].errorMessage).toEqual('The field FirstName must be a string with a maximum length of 50.');
 });
