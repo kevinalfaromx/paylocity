@@ -174,7 +174,7 @@ test('Verify 400 - POST Employees LastName', async ({ request }) => {
   expect(errorMsg[0].errorMessage).toEqual('The LastName field is required.');
 });
 
-test.only('Verify 400 - POST Employees Long Firstname', async ({ request }) => {
+test('Verify 400 - POST Employees Long Firstname', async ({ request }) => {
   const randomFirstname = '123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890';
   const randomLastname = generateRandomName(7);
   const randomDependent = Math.floor(Math.random() * 33);
